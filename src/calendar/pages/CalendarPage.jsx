@@ -3,24 +3,27 @@ import { Calendar } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import { localizer, getMessagesES } from '../../helpers';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Navbar, CalendarEvent, CalendarModal, FabAddNew, FabDelete } from '../';
-import { useUiStore, useCalendarStore } from '../../hooks';
+import { useUiStore, useCalendarStore, useAuthStore } from '../../hooks';
 
 
 
 export const CalendarPage = () => {
 
+    const { user } = useAuthStore();
     const { openDateModal } = useUiStore();
-    const { events, setActiveEvent } = useCalendarStore();
+    const { events, setActiveEvent, startLoadingEvents } = useCalendarStore();
     const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'week');
 
     const eventStyleGetter = (event, start, end, isSelected) => {
         // console.log(event, start, end, isSelected);
 
+        const isMyEvent = (user.uid === event.user._id) || (user.uid === event.user.uid);
+
         const style = {
-            backgroundColor: "#0f928c",
+            backgroundColor: isMyEvent ? "#0f928c" : '#465660',
             borderRadious: '0px',
             opacity: 0.8,
             color: 'white',
@@ -39,13 +42,19 @@ export const CalendarPage = () => {
     const onSelect = (event) => {
         // console.log({ click: event });
         setActiveEvent(event);
-    }
+    };
 
     //Si cambia la vista guardar en el evento la ultima vista
     const onViewChanged = (event) => {
         localStorage.setItem('lastView', event);
         setLastView(event)
-    }
+    };
+
+    useEffect(() => {
+        startLoadingEvents();
+    }, [])
+
+
     return (
         <>
             <Navbar />
