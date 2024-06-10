@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 // import { addHours } from 'date-fns';
 
 // const tempEvent = {
-//     _id: new Date().getTime(),
+//     id: new Date().getTime(),
 //     title: 'Cumples',
 //     notes: 'Hay que comprar bizcocho',
 //     start: new Date(),

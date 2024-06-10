@@ -10,6 +10,7 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { es } from 'date-fns/locale/es';
 import { useCalendarStore, useUiStore } from '../../hooks';
+import { getEnvVariables } from '../../helpers';
 
 registerLocale('es', es)
 
@@ -24,7 +25,10 @@ const customStyles = {
   },
 };
 
-Modal.setAppElement('#root');
+//Si la variable de entorno no es igual a Test ejecute el Modal
+if (getEnvVariables().VITE_MODE !== 'test') { //! Esto evita un error en el test
+  Modal.setAppElement('#root');
+}
 
 export const CalendarModal = () => {
 

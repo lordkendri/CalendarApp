@@ -37,15 +37,15 @@ export const useAuthStore = () => {
         try {
 
             const { data } = await calendarApi.post('/auth/new', { name, email, password });
-            console.log(data);
+            //console.log(data);
             localStorage.setItem('token', data.token);
             localStorage.setItem('token-init-date', new Date().getTime());
 
             dispatch(onLogin({ name: data.name, uid: data.uid }));
         } catch (error) {
-            console.log({ error });
+            //console.log({ error });
             dispatch(onLogout(error.response.data?.msg || '--'));
-            dispatch(onLogout(error.response.data.errors.password?.msg || ''));
+            //dispatch(onLogout(error.response.data.errors.password?.msg || ''));
             setTimeout(() => {
                 dispatch(clearErrorMessage());
             }, 50);
